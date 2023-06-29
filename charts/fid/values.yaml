@@ -1,0 +1,48 @@
+fid:
+  fullnameOverride: fid
+  image:
+    tag: "$FID_VERSION"
+  replicaCount: $FID_NODE_COUNT
+  service:
+    type: NodePort
+  fid:
+    rootPassword: "$FID_PASSWORD"
+    license: "$FID_LICENSE_KEY"
+  dependencies:
+    zookeeper:
+      enabled: true
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
+  persistence:
+    enabled: true
+    storageClass: gp3
+    size: $DISK_SIZE  
+  zk:
+    clusterName: "$TENANT_NAME"
+  metrics:
+    enabled: false
+    pushGateway: "http://prometheus-pushgateway:9091"
+    fluentd:
+      enabled: false
+      elasticSearchHost: "elasticsearch-master"
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - fid
+        topologyKey: kubernetes.io/hostname      
+  zookeeper:
+    fullnameOverride: zookeeper
+    persistence:
+      enabled: true
+      storageClass: gp3
+      size: $ZK_DISK_SIZE
