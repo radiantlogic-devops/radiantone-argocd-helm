@@ -8,6 +8,7 @@ In this example, the radiantone/fid application is pulled from the stable helm r
 dependencies:
 - name: fid
   version: 1.0.0
+  repository: https://radiantlogic-devops.github.io/helm
 ```
 
 A custom values.yaml is used to customize the parameters of the radiantone/fid helm chart:
